@@ -1,7 +1,12 @@
 var apiUrl = "https://www.rampagebots.co.uk/api";
 
+if(localStorage('isDevelopment') !== null) {
+	apiUrl = "http://localhost/api";
+}
 
-function unAuthPost(path, params, callback) {
+$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+
+function unAuthPost(path, params, callbackSuccess, callbackFail) {
 	fullResource = apiUrl + path;
 	$.ajax({
 		type: "POST",
@@ -9,6 +14,8 @@ function unAuthPost(path, params, callback) {
 		headers: {"Content-Type": "application/json"},
 		url: fullResource
 	}).done(function(data, textStatus, request) {
-		callback(data, textStatus, request);
-	})
+		callbackSuccess(data, textStatus, request);
+	}).fail(function(data, textStatus, request) {
+		callbackFail(data, textStatus, request);
+	});
 }

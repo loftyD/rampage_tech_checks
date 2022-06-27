@@ -1,6 +1,6 @@
 var apiUrl = "https://www.rampagebots.co.uk/api";
 
-if(localStorage('isDevelopment') !== null) {
+if(localStorage.getItem('isDevelopment') !== null) {
 	apiUrl = "http://localhost/api";
 }
 

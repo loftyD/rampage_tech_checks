@@ -15,13 +15,10 @@ $(".page-login .form-signin button[type='submit']").on('click', function(e) {
 		}
 
 		if(data.hasOwnProperty('success')) {			
-			if(request.getResponseHeader('authorization') !== null || request.getResponseHeader('Authorization') !== null) {
-				$auth = request.getResponseHeader('authorization') == null ? request.getResponseHeader('Authorization') : request.getResponseHeader('authorization');
+				$auth = request.getResponseHeader('Authorization');
 				localStorage.setItem('Authorization', $auth);
 				window.location.replace("/");
 				return;
-			}		
-
 		}
 	}, function(request, textStatus, errorThrown) {
 		data = request.responseJSON;

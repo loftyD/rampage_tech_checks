@@ -1,10 +1,5 @@
-var isDevelopment = true;
+var apiUrl = "https://www.rampagebots.co.uk/api";
 
-if(isDevelopment) {
-	var apiUrl = "https://8b286e789c55.ngrok.io/api";
-} else {
-	var apiUrl = "https://www.rampagebots.co.uk/api";
-}
 
 function unAuthPost(path, params, callback) {
 	fullResource = apiUrl + path;

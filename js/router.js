@@ -3,8 +3,5 @@ $(".page-login .form-signin button[type='submit']").on('click', function(e) {
 	data = { email: $("#inputEmail").val(), password: $("#inputPassword").val() }
 	unAuthPost("/users/sign_in", JSON.stringify(data), function(data, textStatus, request) {
 		alert(data.success);
-		if(data.hasOwnProperty('success')) {
-			alert(request.getResponseHeader('Authorization'));
-		}
 	});
 });

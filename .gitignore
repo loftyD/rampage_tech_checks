@@ -1,0 +1,10 @@
+composer.phar
+/vendor/
+Capfile
+Gemfile
+Gemfile.lock
+config/deploy/*.rb
+config/*.rb
+*.rb
+lib/*
+/log/capistrano.log

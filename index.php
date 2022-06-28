@@ -12,6 +12,10 @@ $app->route("/login", function() use($app) {
 	$app->render("login");
 });
 
+$app->route("/logout", function() use($app) {
+	$app->render("logout");
+});
+
 $app->start();
 
 ?>

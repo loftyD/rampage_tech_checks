@@ -16,6 +16,10 @@ $app->route("/logout", function() use($app) {
 	$app->render("logout");
 });
 
+$app->route("/event", function() use($app) {
+	$app->render("event");
+});
+
 $app->start();
 
 ?>

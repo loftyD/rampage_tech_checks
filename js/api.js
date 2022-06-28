@@ -19,3 +19,18 @@ function unAuthPost(path, params, callbackSuccess, callbackFail) {
 		callbackFail(data, textStatus, request);
 	});
 }
+
+function authGet(path, callbackSuccess, callbackFail=null) {
+	fullResource = apiUrl + path;
+	$.ajax({
+		type: "GET",
+		headers: {"Content-Type": "application/json", "Authorization": localStorage.getItem('Authorization')},
+		url: fullResource
+	}).done(function(data, textStatus, request) {
+		callbackSuccess(data, textStatus, request);
+	}).fail(function(data, textStatus, request) {
+		if(callbackFail != null) {
+			callbackFail(data, textStatus, request);
+		}
+	});	
+}

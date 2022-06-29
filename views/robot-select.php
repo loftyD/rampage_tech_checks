@@ -10,6 +10,7 @@
 						<select id="robot_select" class="form-control form-control-lg" required autofocus></select>
 						<br />
 						<p id="bot-info"></p>
+						<a href="javascript:void(0)" class="btn btn-primary btn-checks-continue d-none">Proceed to checks</a>
 					</div>
 				</div>
 			</form>

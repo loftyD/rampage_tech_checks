@@ -24,6 +24,8 @@ if(!isAuthed) {
 	    }
 	    if(selectedTabId == 'robot-tab') {
 	    	$("#checks-tab").addClass('disabled');
+	    	$("#comments").val("");
+			$("#driver_name").val("");
 	    }
 	    if(selectedTabId == 'checks-tab') {
 	    	authGet("/techchecks/find?event_id=" + selected_event +"&robot_id=" + selected_robot, function(data) {
@@ -92,6 +94,26 @@ if(!isAuthed) {
 			$("#checks-save").removeClass('disabled');
 		}
 	});
+
+	$("#checks-save").on("click", function(e) {
+		e.preventDefault();
+		data = {};
+		data.checks = {};
+		for(i=0;i<checks.length;i++) {
+			data['checks'][checks[i]] = $("input[name="+checks[i]+"]:checked").val();
+		}
+
+		data.event_id = selected_event;
+		data.robot_id = selected_robot;
+		data.comments = $("#comments").val();
+		data.driver_name = $("#driver_name").val();
+		authPost("/techchecks/create", JSON.stringify(data), function(data) {
+			if(data.hasOwnProperty('status')) {
+				alert(data.status);
+				$('.nav-tabs a[href="#robot-tab"]').trigger('click');
+			}
+		});
+	})
 
 
 	$("#robot_select").on('change', function() {

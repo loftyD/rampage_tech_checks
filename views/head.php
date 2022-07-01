@@ -9,6 +9,11 @@
 		<link href="/styles/main.css" />
 		<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" integrity="sha512-kq3FES+RuuGoBW3a9R2ELYKRywUEQv0wvPTItv3DSGqjpbNtGWVdvT8qwdKkqvPzT93jp8tSF4+oN4IeTEIlQA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	    <link rel="apple-touch-icon" sizes="180x180" href="https://www.rampagebots.co.uk/apple-touch-icon.png">
+	    <link rel="icon" type="image/png" sizes="32x32" href="https://www.rampagebots.co.uk/favicon-32x32.png">
+	    <link rel="icon" type="image/png" sizes="16x16" href="https://www.rampagebots.co.uk/favicon-16x16.png">
+	    <meta name="msapplication-TileColor" content="#ffd700">
+	    <meta name="theme-color" content="#000000">
 	</head>
 	<body>
 		<?=$this->render("nav");?>

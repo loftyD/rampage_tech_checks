@@ -110,7 +110,7 @@ if(!isAuthed) {
 		authPost("/techchecks/create", JSON.stringify(data), function(data) {
 			if(data.hasOwnProperty('status')) {
 				alert(data.status);
-				$('.nav-tabs a[href="#robot-tab"]').trigger('click');
+				$('a[href="#robot"]').tab('show');
 			}
 		});
 	})

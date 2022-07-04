@@ -4,7 +4,9 @@ if(localStorage.getItem('isDevelopment') !== null) {
 	apiUrl = "http://localhost/api";
 }
 
-$(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+$(document).ajaxStart(function() {
+	$.blockUI({message: 'Loading data...'})	
+}).ajaxStop($.unblockUI);
 
 function unAuthPost(path, params, callbackSuccess, callbackFail=null) {
 	fullResource = apiUrl + path;

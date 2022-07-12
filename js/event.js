@@ -41,6 +41,7 @@ if(!isAuthed) {
 	    }
 	    if(selectedTabId == 'checks-tab') {
 	    	authGet("/techchecks/find?event_id=" + selected_event +"&robot_id=" + selected_robot, function(data) {
+	  
 				if(data.hasOwnProperty('techcheck')) {
 							techcheck = data.techcheck;
 							$("#driver_name").val(techcheck.driver_name);
@@ -73,6 +74,16 @@ if(!isAuthed) {
 					$(".main_checks").show();
 					$("#checks-save").removeClass('d-none');
 				}
+	    	}, function(request, textStatus, errorThrown) {
+	    		data = request.responseJSON;
+	    		if(data.hasOwnProperty('error')) {
+	    			alert(data.error);
+	    			$("#robot-tab").addClass('disabled');
+	   				$("#event-tab").removeClass('disabled');
+	   				$("#checks-tab").addClass("disabled");
+	    			$('#eventTab a[href="#event"]').tab('show');
+	    			selected_robot = '';
+	    		}
 	    	});
 	    }
 	});

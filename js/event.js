@@ -1,8 +1,20 @@
 if(!isAuthed) {
 	window.location.replace("/login");
 } else {
+
 	var selected_event = '';
 	var selected_robot = '';
+	if(localStorage.getItem('robot') != null && localStorage.getItem('event') != null) {
+		selected_robot = localStorage.getItem('robot');
+		selected_event = localStorage.getItem('event');
+		$("#robot-tab").addClass('disabled');
+	   	$("#event-tab").addClass('disabled');
+	   	$("#checks-tab").removeClass("disabled");
+	   	$('#eventTab a[href="#checks"]').tab('show');
+	   	localStorage.removeItem('robot');
+	   	localStorage.removeItem('event');
+	}
+
 	var checks = ['check_cradle', 'check_sharp_edges', 'check_locking_bars', 'check_batteries', 
 			  'check_chargers', 'check_wiring', 'check_pneumatic_system', 'check_hydraulic_system', 
 			  'check_ic_engine_system', 'check_weaponry', 'check_removable_link', 'check_power_light', 

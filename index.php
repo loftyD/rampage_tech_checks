@@ -20,6 +20,10 @@ $app->route("/event", function() use($app) {
 	$app->render("event");
 });
 
+$app->route("/c/@event/@robot", function($event, $robot) use($app) {
+	$app->render("redirect", ["event" => $event, "robot" => $robot]);
+});
+
 $app->start();
 
 ?>

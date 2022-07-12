@@ -1,0 +1,1 @@
+<span id="path" data-robot="<?=$robot;?>" data-event="<?=$event;?>"></span>

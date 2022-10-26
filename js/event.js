@@ -4,6 +4,7 @@ if(!isAuthed) {
 
 	var selected_event = '';
 	var selected_robot = '';
+	var robot_data = [];
 	if(localStorage.getItem('robot') != null && localStorage.getItem('event') != null) {
 		selected_robot = localStorage.getItem('robot');
 		selected_event = localStorage.getItem('event');
@@ -140,8 +141,69 @@ if(!isAuthed) {
 
 
 	$("#robot_select").on('change', function() {
-		$("#bot-info").text("Is Reserve: " + $(this).find(":selected").data('reserve'));
+		let techcheck = false;
+		// $("#bot-info").text("Is Reserve: " + $(this).find(":selected").data('reserve'));
+		$("#bot-info").html('');
 		selected_robot = $(this).val();
+		data = robot_data[selected_robot][0];
+
+		$("#bot-info").append("<ul>");
+		for(key in data) {
+			okey = key;
+			dt = data[okey];
+			if(okey == 'id') {
+				continue;
+			}
+			if(okey == 'inspector' && dt == false) {
+				continue;
+			}
+
+			if(okey == 'techcheck') {
+				key="Has Been Tech Checked"
+			}
+
+			if(okey == 'techcheck') {
+				techcheck = dt;
+				if(typeof data[okey] === 'object') {
+					dt = 'Yes';
+				} else {
+					dt = 'No';
+				}
+			}
+
+			$("#bot-info").append("<li>"+ key.toProperCase() +": "+ dt +"</li>");
+		}
+		$("#bot-info").append("</ul>");
+
+		if(typeof techcheck === 'object') {
+			$("#bot-info").append("<hr><h2>Recent Tech Check History</h2>");
+			$("#bot-info").append("<ul>");
+			for(k in techcheck) {
+				val = techcheck[k];
+				key = k;
+				if(k == 'id' || k =='series_id' || k == 'robot_id' || k == 'inspector_id') {
+					continue;
+				}
+				if (k.match(/^check_/)) {
+					if(val == '1') {
+						val = 'Yes';
+					} else {
+						val = 'No';
+					}
+				}
+
+				if (k == 'created_at') {
+					key = 'Tech Check Created At';
+				}
+				if (k == 'updated_at') {
+					key = 'Last Updated At';
+				}
+				re = /_/gi;
+				$("#bot-info").append("<li>"+ key.toProperCase().replace(re,' ') +": "+ val +"</li>");
+			}
+			$("#bot-info").append("</ul>");
+		}
+
 		$(".btn-checks-continue").removeClass("d-none");
 	});
 
@@ -157,6 +219,7 @@ if(!isAuthed) {
 	    $('.nav-tabs .active').parent().next('li').find('a').removeClass('disabled').trigger('click');
 	    authGet("/events/permissible_robots?event_id="+selected_event, function(data) {
 	    	for(i=0;i<data.length;i++) {
+	    		robot_data[data[i].id] = data;
 	    		$("#robot_select").append("<option data-reserve='"+ data[i].reserve + "' value='"+ data[i].id+"'>"+ data[i].name +"</option>");
 	    	}
 	    	$("#robot_select").select2({

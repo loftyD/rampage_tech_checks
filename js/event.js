@@ -203,9 +203,13 @@ if(!isAuthed) {
 				$("#main_tc_details").append("<li>"+ key.toProperCase() +": "+ dt +"</li>");
 				}
 
-				$("#bot-info").append("<div class='row' id='tc_panel'><div class='col-sm-6' id='main_tc'>");
 
 				getTechCheck(data);
+				if(recentTechCheck == null) {
+					$("#bot-info").append("<div class='row' id='tc_panel'><div class='col-sm-6' id='main_tc'>");
+				} else {
+					$("#bot-info").append("<div class='row' id='tc_panel'><div class='col-sm-12' id='main_tc'></div></div>");
+				}
 				if(recentTechCheck != null) {
 					$("#tc_panel").append("<div class='col-sm-6' id='hist_tc'>");
 					$("#hist_tc").append("<hr><h3 data-toggle='tooltip' data-placement='top' title='"+ recentTechCheck.techcheck.event + "'>Previous Event Tech Check History</h3><br /><br />");

@@ -38,42 +38,105 @@ if(!isAuthed) {
 	    	$("#checks-tab").addClass('disabled');
 	    	$("#comments").val("");
 			$("#driver_name").val("");
+	    	authGet("/techchecks/eventclubchecks?event_id="+selected_event, function(data) {
+	    		club_checks = Object.keys(data);
+	    	});			
 	    }
 	    if(selectedTabId == 'checks-tab') {
 	    	authGet("/techchecks/find?event_id=" + selected_event +"&robot_id=" + selected_robot, function(data) {
-	  
-				if(data.hasOwnProperty('techcheck')) {
-							techcheck = data.techcheck;
-							$("#driver_name").val(techcheck.driver_name);
-							$("#comments").val(techcheck.comments);
-							for(i=0;i<checks.length;i++) {
-								metric = checks[i];
-								currentCheck = techcheck[metric];
-								if(currentCheck == '1') {
-									idToUse = metric+"_y";
-								} else {
-									idToUse = metric+"_n";
-								}
-								$("#" + idToUse).prop("checked", true);
+	  	    		
+    			authGet("/techchecks/eventclubchecks?event_id=" + selected_event, function(club_data) {
+    				for(key in club_data) {
+	    				$(".club_checks").append(`\
+	    					<div class="row"> \
+								<div class="col-2"> \
+									<h5>${club_data[key].title}<span class="br_check_${key}"></span><span class="sub_check_${key}"></span></h5> \
+								</div> \
+								<div class="col-6"> \
+									<p><small>${club_data[key].description}</small></p> \
+								</div> \
+								<div class="col-2"><input type="radio" id="${key}_y" name="${key}" value="1" class="form-control metric" /></div> \
+								<div class="col-2"><input type="radio" id="${key}_n" name="${key}" value="0" class="form-control metric" /></div> \
+							</div> \
+						`);
+						if(club_data[key].sub_title_text != null) {
+							$(`.br_check_${key}`).html($("<br>"));
+							$(`.sub_check_${key}`).html(`<small>${club_data[key].sub_title_text}</small>`);
+						}
+						
+	    			}
+					if(data.hasOwnProperty('techcheck')) {
+								techcheck = data.techcheck;
+								$("#driver_name").val(techcheck.driver_name);
+								$("#comments").val(techcheck.comments);
+								all_checks = checks.concat(club_checks);
 
-								if(techcheck.has_passed == true) {
-									$("#pass").prop("checked", true);
-								} else {
-									$("#fail").prop("checked", true);
-								}
+								for(i=0;i<all_checks.length;i++) {
+									metric = all_checks[i];
+									currentCheck = techcheck[metric];
+									if(currentCheck == '1') {
+										idToUse = metric+"_y";
+									} else {
+										idToUse = metric+"_n";
+									}
+									console.log(idToUse);
+									$("#" + idToUse).prop("checked", true);
 
-							}
-							$(".main_checks").show();
-							$("#checks-save").removeClass('d-none');
-				} else {
-					$("#driver_name").val(data.driver_name);
-					$("#comments").val('');
-					$("input[type=radio]").prop("checked", false);
-					$("#pass").prop("checked", false);
-					$("#fail").prop("checked", false);
-					$(".main_checks").show();
-					$("#checks-save").removeClass('d-none');
-				}
+									if(techcheck.has_passed == true) {
+										$("#pass").prop("checked", true);
+									} else {
+										$("#fail").prop("checked", true);
+									}
+
+								}
+								$(".main_checks").show();
+								$("#checks-save").removeClass('d-none');
+					} else {
+						$("#driver_name").val(data.driver_name);
+						$("#comments").val('');
+						$("input[type=radio]").prop("checked", false);
+						$("#pass").prop("checked", false);
+						$("#fail").prop("checked", false);
+						$(".main_checks").show();
+						$("#checks-save").removeClass('d-none');
+					}
+    			}, function(club_data) {
+					if(data.hasOwnProperty('techcheck')) {
+								techcheck = data.techcheck;
+								$("#driver_name").val(techcheck.driver_name);
+								$("#comments").val(techcheck.comments);
+								all_checks = checks.concat(club_checks);
+
+								for(i=0;i<all_checks.length;i++) {
+									metric = all_checks[i];
+									currentCheck = techcheck[metric];
+									if(currentCheck == '1') {
+										idToUse = metric+"_y";
+									} else {
+										idToUse = metric+"_n";
+									}
+									$("#" + idToUse).prop("checked", true);
+
+									if(techcheck.has_passed == true) {
+										$("#pass").prop("checked", true);
+									} else {
+										$("#fail").prop("checked", true);
+									}
+
+								}
+								$(".main_checks").show();
+								$("#checks-save").removeClass('d-none');
+					} else {
+						$("#driver_name").val(data.driver_name);
+						$("#comments").val('');
+						$("input[type=radio]").prop("checked", false);
+						$("#pass").prop("checked", false);
+						$("#fail").prop("checked", false);
+						$(".main_checks").show();
+						$("#checks-save").removeClass('d-none');
+					}
+    			});
+
 	    	}, function(request, textStatus, errorThrown) {
 	    		data = request.responseJSON;
 	    		if(data.hasOwnProperty('error')) {
@@ -90,7 +153,7 @@ if(!isAuthed) {
 
 
 
-	$(".metric").on("change", function() {
+	$( document ).on("change",".metric", function() {
 		let isFail = false;
 		let res = [];
 		let complete = false;
@@ -122,9 +185,12 @@ if(!isAuthed) {
 		e.preventDefault();
 		data = {};
 		data.checks = {};
-		for(i=0;i<checks.length;i++) {
-			data['checks'][checks[i]] = $("input[name="+checks[i]+"]:checked").val();
+		all_checks = checks.concat(club_checks);
+		for(i=0;i<all_checks.length;i++) {
+			data['checks'][all_checks[i]] = $("input[name="+all_checks[i]+"]:checked").val();
 		}
+
+		console.log(data.checks);
 
 		data.event_id = selected_event;
 		data.robot_id = selected_robot;
@@ -133,6 +199,9 @@ if(!isAuthed) {
 		authPost("/techchecks/create", JSON.stringify(data), function(data) {
 			if(data.hasOwnProperty('status')) {
 				alert(data.status);
+				all_checks = checks;
+	   			$(".club_checks").empty();
+	    		club_checks = null;
 				$("#bot-info").html('');
 				$('a[href="#robot"]').tab('show');
 				$("#robot_select > option").remove();
@@ -290,6 +359,13 @@ if(!isAuthed) {
 
 	$("table.events-table > tbody").on("click", "td a.btn-event", function(event){
 	    selected_event = $(this).data('event');
+	    $(".club_checks").empty();
+	    club_checks = null;
+
+	    authGet("/techchecks/eventclubchecks?event_id="+selected_event, function(data) {
+	    	club_checks = Object.keys(data);
+	    });
+
 	    $("#bot-info").text('');
 	    $("#robot_select > option").remove();
 	    $("#robot_select").append("<option value=''></option>");

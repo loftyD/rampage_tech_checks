@@ -74,3 +74,7 @@ $checks = [
 	<div class="col-2"><input type="radio" id="<?=$check;?>_n" name="<?=$check;?>" value="0" class="form-control metric" /></div>
 </div>
 <?php } ?>
+
+<div class="club_checks">
+
+</div>

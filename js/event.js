@@ -47,8 +47,10 @@ if(!isAuthed) {
 	    }
 	    if(selectedTabId == 'checks-tab') {
 	    	authGet("/techchecks/find?event_id=" + selected_event +"&robot_id=" + selected_robot, function(data) {
-	  	    		
+	  	    	club_checks = null;
+				$(".club_checks").empty();
     			authGet("/techchecks/eventclubchecks?event_id=" + selected_event, function(club_data) {
+    				club_checks = Object.keys(club_data);
     				for(key in club_data) {
 	    				$(".club_checks").append(`\
 	    					<div class="row"> \

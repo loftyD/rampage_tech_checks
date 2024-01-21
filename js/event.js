@@ -364,10 +364,11 @@ if(!isAuthed) {
 	    selected_event = $(this).data('event');
 	    $(".club_checks").empty();
 	    club_checks = null;
+	    all_checks = null;
 
-	    authGet("/techchecks/eventclubchecks?event_id="+selected_event, function(data) {
-	    	club_checks = Object.keys(data);
-	    });
+	    // authGet("/techchecks/eventclubchecks?event_id="+selected_event, function(data) {
+	    // 	club_checks = Object.keys(data);
+	    // });
 
 	    $("#bot-info").text('');
 	    $("#robot_select > option").remove();

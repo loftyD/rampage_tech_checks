@@ -51,6 +51,7 @@ if(!isAuthed) {
 				$(".club_checks").empty();
     			authGet("/techchecks/eventclubchecks?event_id=" + selected_event, function(club_data) {
     				club_checks = Object.keys(club_data);
+    				$(".club_checks").empty();
     				for(key in club_data) {
 	    				$(".club_checks").append(`\
 	    					<div class="row"> \

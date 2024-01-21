@@ -40,9 +40,9 @@ if(!isAuthed) {
 			$("#driver_name").val("");
 			club_checks = null;
 			all_checks = null;
-	    	authGet("/techchecks/eventclubchecks?event_id="+selected_event, function(data) {
-	    		club_checks = Object.keys(data);
-	    	});			
+	    	// authGet("/techchecks/eventclubchecks?event_id="+selected_event, function(data) {
+	    	// 	club_checks = Object.keys(data);
+	    	// });			
 	    }
 	    if(selectedTabId == 'checks-tab') {
 	    	authGet("/techchecks/find?event_id=" + selected_event +"&robot_id=" + selected_robot, function(data) {

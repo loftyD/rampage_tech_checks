@@ -38,6 +38,7 @@ if(!isAuthed) {
 	    	$("#checks-tab").addClass('disabled');
 	    	$("#comments").val("");
 			$("#driver_name").val("");
+			club_checks = null;
 	    	authGet("/techchecks/eventclubchecks?event_id="+selected_event, function(data) {
 	    		club_checks = Object.keys(data);
 	    	});			
